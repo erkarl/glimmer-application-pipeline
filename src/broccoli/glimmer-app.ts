@@ -203,19 +203,26 @@ export default class GlimmerApp {
     if (publicTree) {
       trees.push(publicTree);
     }
-    
+
     let appTree = merge(trees);
 
     // Fingerprint assets for cache busting in production.
+    /*
+     Disable asset-rev until it's possible to generate asset-map
+     in Glimmer apps.
     if (isProduction) {
       let extensions = ['js', 'css'];
       let replaceExtensions = ['html', 'js', 'css'];
+      let exclude = ['sw.js', 'web-animations.min.js'];
 
       appTree = assetRev(appTree, {
+        enabled: false,
+        exclude,
         extensions,
         replaceExtensions
       });
     }
+    */
 
     return appTree;
   }
@@ -343,7 +350,7 @@ export default class GlimmerApp {
       // Otherwise concat all the css in the styles dir
       return concat(new Funnel(stylesPath, {
         include: ['**/*.css'],
-        annotation: 'Funnel: css'}), 
+        annotation: 'Funnel: css'}),
         { outputFile: 'app.css' });
     }
   }
